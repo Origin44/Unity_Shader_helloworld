@@ -1,6 +1,6 @@
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
-Shader "Unity Shaders Book/Chapter 6/Diffuse Vertex-Level" {
+Shader "Unity Shaders Book/Chapter 6/halflambert" {
     Properties {
         _Diffuse("Diffuse",color)=(1,1,1,1)
     }
@@ -34,9 +34,10 @@ Shader "Unity Shaders Book/Chapter 6/Diffuse Vertex-Level" {
             
             fixed4 frag(v2f i):SV_Target {
                 fixed3 ambient=UNITY_LIGHTMODEL_AMBIENT.xyz;
-                fixed3 worldNormal=normalize(i.worldNormal);
+                fixed3 worldNormal=normalize(normalize(i.worldNormal));
                 fixed3 worldLightDir=normalize(_WorldSpaceLightPos0.xyz);
-                fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*dot(worldNormal,worldLightDir);
+                fixed3 halflambert=dot(worldNormal,worldLightDir)*0.5+0.5;
+                fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*halflambert;
                 fixed3 color=diffuse+ambient;
                 return fixed4(color,1.0);
             }
