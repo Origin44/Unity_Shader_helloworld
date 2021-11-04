@@ -1,6 +1,6 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "Unity Shaders Book/Chapter 5/Simple Shader" {
+Shader "Unity Shaders Book/Chapter 5/Simple Shader2" {
     Properties {
         _Color ("Color Tint",Color) = (1.0,1.0,1.0,1.0)
     }
