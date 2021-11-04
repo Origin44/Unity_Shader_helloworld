@@ -38,9 +38,9 @@ Shader "Unity Shaders Book/Chapter 6/BlinnPhong"{
             fixed4 frag(v2f i):SV_Target{
                 fixed3 ambient=UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 worldNormal=normalize(i.worldNormal);
-                fixed3 worldLightDir=normalize(_WorldSpaceLightPos0.xyz);
+                fixed3 worldLightDir=normalize(UnityWorldSpaceLightDir(i.worldPos));
                 fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));
-                fixed3 viewDir=normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);
+                fixed3 viewDir=normalize(UnityWorldSpaceViewDir(i.worldPos));
                 fixed3 halfDir=normalize(viewDir+worldLightDir);
                 fixed3 specular=_LightColor0.rgb*_Specular*pow(saturate(dot(worldNormal,halfDir)),_Gloss);
                 fixed3 color=ambient+diffuse+specular;
