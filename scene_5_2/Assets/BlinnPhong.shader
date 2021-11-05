@@ -30,7 +30,7 @@ Shader "Unity Shaders Book/Chapter 6/BlinnPhong"{
             v2f vert(a2v v){
                 v2f o;
                 o.pos=UnityObjectToClipPos(v.vertex);
-                o.worldNormal=mul(v.normal,(float3x3)unity_WorldToObject);
+                o.worldNormal=UnityObjectToWorldNormal(v.normal);
                 o.worldPos=mul(unity_ObjectToWorld,v.vertex);
                 return o; 
             }
