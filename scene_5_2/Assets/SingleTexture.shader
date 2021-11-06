@@ -52,7 +52,7 @@ Shader "Unity Shaders Book/Chapter 7/SingleTexture"{
             fixed3 halfDir=normalize(worldLightDir+viewDir);
             fixed3 specular=_LightColor0.rgb*_Specular*pow(saturate(dot(worldNormal,halfDir)),_Gloss);
             fixed3 ambient=UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
-            return fixed4(ambient+specular+diffuse,1.0);
+            return fixed4(ambient+diffuse+specular,1.0);
         } 
 
         ENDCG
