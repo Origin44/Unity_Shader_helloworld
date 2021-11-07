@@ -10,6 +10,7 @@ Shader "Unity Shaders Book/Chapter 7/NormalMapTangentSpace"{
     Subshader{
         Pass{
             Tags{"LightMode"="ForwardBase"}
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -40,7 +41,7 @@ Shader "Unity Shaders Book/Chapter 7/NormalMapTangentSpace"{
 
             v2f vert(a2v v){
                 v2f o;
-                o.pos=UnityWorldToClipPos(v.vertex);
+                o.pos=UnityObjectToClipPos(v.vertex);
                 o.uv.xy=TRANSFORM_TEX(v.texcoord,_MainTex);
                 o.uv.zw=TRANSFORM_TEX(v.texcoord,_BumpMap);
                 TANGENT_SPACE_ROTATION;
@@ -56,7 +57,7 @@ Shader "Unity Shaders Book/Chapter 7/NormalMapTangentSpace"{
                fixed3 tangentNormal=UnpackNormal(packedNormal);
                tangentNormal.xy *=_BumpScale;
                tangentNormal.z=sqrt(1.0-saturate(dot(tangentNormal.xy,tangentNormal.xy)));
-               fixed3 albedo=tex2D(_MainTex,i.uv).rgb*_Color.rgb;
+               fixed3 albedo=tex2D(_MainTex,i.uv.xy).rgb*_Color.rgb;
                fixed3 ambient=UNITY_LIGHTMODEL_AMBIENT.rgb*albedo;
                fixed3 diffuse=albedo*_LightColor0.rgb*max(0,dot(tangentNormal,tangentLightDir));
                fixed3 halfDir=normalize(tangentViewDir+tangentLightDir);
