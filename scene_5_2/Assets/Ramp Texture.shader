@@ -51,7 +51,7 @@ Shader "Unity Shaders Book/Chapter 7/Ramp Texture"{
                 fixed3 viewDir=normalize(UnityWorldSpaceViewDir(i.worldPos));
                 fixed3 halfDir=normalize(viewDir+worldLightDir);
                 fixed3 specular=_LightColor0*_Specular*pow(saturate(dot(worldNormal,halfDir)),_Gloss);
-                return fixed4(specular+diffuse+ambient,1.0);
+                return fixed4(diffuse+specular+ambient,1.0);
             }
             ENDCG
         }
