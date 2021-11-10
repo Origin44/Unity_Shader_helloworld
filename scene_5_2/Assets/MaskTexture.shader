@@ -66,7 +66,7 @@ Shader "Unity Shaders Book/Chapter 7/Mask Texture"{
                 fixed3 diffuse=_LightColor0.rgb*albedo*saturate(dot(tangentNormal,tangentLightDir));
                 fixed specularMask=tex2D(_SpecularMask,i.uv).r*_SpecularScale;
                 fixed3 specular=_Specular.rgb*_LightColor0*pow(saturate(dot(halfDir,tangentNormal)),_Gloss)*specularMask;
-
+                //mole
                 return fixed4(ambient+diffuse+specular,1.0);
             }
             ENDCG
