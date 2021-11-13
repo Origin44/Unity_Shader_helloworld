@@ -57,6 +57,7 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Blend with ZWrite"{
                 fixed3 diffuse=_LightColor0.rgb*albedo*saturate(dot(worldNormal,worldLightDir));
                 return fixed4(diffuse+ambient,texColor.a*_AlphaScale);
             }
+            //mole today i learned blend opration and mixed-mode
             ENDCG
         }
     }
