@@ -7,6 +7,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
         _Gloss("Gloss",range(8.0,256))=20
     }
     Subshader{
+        Tags{"RenderType"="Opaque"}
         Pass{
             Tags{"LightMode"="ForwardBase"}
             CGPROGRAM
