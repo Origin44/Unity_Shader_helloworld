@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced '_LightMatrix0' with 'unity_WorldToLight'
-
 Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
     Properties{
         _Diffuse("Diffuse",Color)=(1,1,1,1)
@@ -15,6 +13,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
             #pragma vertex vert
             #pragma fragment frag
             #include "Lighting.cginc"
+            #include "AutoLight.cginc"
 
             struct a2v{
                 float4 vertex:POSITION;
@@ -25,6 +24,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
                 float4 pos:SV_POSITION;
                 float3 worldNormal:TEXCOORD0;
                 float3 worldPos:TEXCOORD1;
+                SHADOW_COORDS(2)
             };
 
             float4 _Diffuse;
@@ -36,6 +36,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
                 o.pos=UnityObjectToClipPos(v.vertex);
                 o.worldPos=mul(unity_ObjectToWorld,v.vertex);
                 o.worldNormal=UnityObjectToWorldNormal(v.normal);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -49,7 +50,8 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"{
                 fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldLightDir,worldNormal));
                 fixed3 specular=_LightColor0.rgb*_Specular.rgb*pow(saturate(dot(halfDir,worldNormal)),_Gloss);
                 fixed atten=1.0;
-                return fixed4(ambient+(diffuse+specular)*atten,1.0);
+                fixed shadow=SHADOW_ATTENUATION(i);
+                return fixed4(ambient+(diffuse+specular)*atten*shadow,1.0);
             }
             ENDCG
         }
