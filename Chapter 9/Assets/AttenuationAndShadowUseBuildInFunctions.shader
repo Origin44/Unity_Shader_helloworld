@@ -73,6 +73,7 @@ Shader "Unity Shaders Book/Chapter 9/AttenuationAndShadowUseBuildInFunctions"{
                 float4 pos:SV_POSITION;
                 float3 worldNormal:TEXCOORD0;
                 float3 worldPos:TEXCOORD1;
+                SHADOW_COORDS(2)
             };
 
             float4 _Diffuse;
@@ -84,26 +85,18 @@ Shader "Unity Shaders Book/Chapter 9/AttenuationAndShadowUseBuildInFunctions"{
                 o.pos=UnityObjectToClipPos(v.vertex);
                 o.worldPos=mul(unity_ObjectToWorld,v.vertex);
                 o.worldNormal=UnityObjectToWorldNormal(v.normal);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
             fixed4 frag(v2f i):SV_Target{
                 fixed3 worldNormal=normalize(i.worldNormal);
-                #ifdef USING_DIRECTIONAL_LIGHT
-                    fixed3 worldLightDir=normalize(_WorldSpaceLightPos0.xyz);
-                #else
-                    fixed3 worldLightDir=normalize(_WorldSpaceLightPos0.xyz-i.worldPos.xyz);
-                #endif
+                fixed3 worldLightDir=normalize(UnityWorldSpaceLightDir(i.worldPos));
                 fixed3 viewDir=normalize(UnityWorldSpaceViewDir(i.worldPos));
                 fixed3 halfDir=normalize(viewDir+worldLightDir);
                 fixed3 specular=_LightColor0.rgb*_Specular.rgb*pow(saturate(dot(halfDir,worldNormal)),_Gloss);
-                #ifdef USING_DIRECTIONAL_LIGHT
-                    fixed atten=1.0;
-                #else
-                    float3 lightCoord=mul(unity_WorldToLight,float4(i.worldPos,1.0)).xyz;
-                    fixed atten=tex2D(_LightTexture0,dot(lightCoord,lightCoord).rr).UNITY_ATTEN_CHANNEL;
-                #endif
                 fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldLightDir,worldNormal));
+                UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
                 return fixed4((diffuse+specular)*atten,1.0);
             }
             ENDCG
