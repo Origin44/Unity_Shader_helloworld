@@ -1,4 +1,4 @@
-Shader "Unity Shaders Book/Chapter 9/Shadow"{
+Shader "Unity Shaders Book/Chapter 9/AttenuationAndShadowUseBuildInFunctions"{
     Properties{
         _Diffuse("Diffuse",Color)=(1,1,1,1)
         _Specular("Specular",Color)=(1,1,1,1)
@@ -49,9 +49,8 @@ Shader "Unity Shaders Book/Chapter 9/Shadow"{
                 fixed3 ambient=UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 diffuse=_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldLightDir,worldNormal));
                 fixed3 specular=_LightColor0.rgb*_Specular.rgb*pow(saturate(dot(halfDir,worldNormal)),_Gloss);
-                fixed atten=1.0;
-                fixed shadow=SHADOW_ATTENUATION(i);
-                return fixed4(ambient+(diffuse+specular)*atten*shadow,1.0);
+                UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+                return fixed4(ambient+(diffuse+specular)*atten,1.0);
             }
             ENDCG
         }
