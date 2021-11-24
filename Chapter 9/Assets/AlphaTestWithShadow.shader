@@ -8,7 +8,7 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Test With Shadow"{
         Tags{"Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="TransparentCutout"}
         Pass{
             Tags{"LightMode"="ForwardBase"}
-            Cull Off
+            Cull Off //关闭背面剔除
             CGPROGRAM
             #pragma multi_compile_fwdbase
             #pragma vertex vert
@@ -60,5 +60,5 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Test With Shadow"{
             ENDCG
         }
     }
-    Fallback "VertexLit"
+    Fallback "Transparent/Cutout/VertexLit"
 }
