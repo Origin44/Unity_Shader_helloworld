@@ -1,4 +1,4 @@
-Shader "Unity Shaders Book/Chapter 8/Alpha Test With Shadow"{
+Shader "Unity Shaders Book/Chapter 9/Alpha Test With Shadow"{
     Properties{
         _Color("Color",Color)=(1,1,1,1)
         _MainTex("Main Tex",2D)="white"{}
