@@ -9,11 +9,13 @@ Shader "Unity Shaders Book/Chapter 11/Scrolling Background" {
     Subshader{
         Tags {"RenderType"="Opaque" "Queue"="Geometry"}
         Pass {
-            Tags {"LightMode"="ForwardBase"}
+            Tags { "LightMode"="ForwardBase" }
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+
+			#include "UnityCG.cginc"
 
             sampler2D _MainTex;
             sampler2D _DetailTex;
@@ -24,7 +26,7 @@ Shader "Unity Shaders Book/Chapter 11/Scrolling Background" {
             float _Multiplier;
 
             struct a2v{
-                float vertex:POSITION;
+                float4 vertex:POSITION;
                 float4 texcoord:TEXCOORD0;
             };
 
@@ -35,7 +37,7 @@ Shader "Unity Shaders Book/Chapter 11/Scrolling Background" {
 
             v2f vert(a2v v) {
                 v2f o;
-                o.pos=UnityObjectToClipPos(v.vertex);
+                o.pos= UnityObjectToClipPos(v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex) + frac(float2(_ScrollX, 0.0) * _Time.y);
 				o.uv.zw = TRANSFORM_TEX(v.texcoord, _DetailTex) + frac(float2(_Scroll2X, 0.0) * _Time.y);
 				return o;
